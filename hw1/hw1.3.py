@@ -6,18 +6,6 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def read_file():
-    file_path = "./HW1DATA.txt"
-    with codecs.open(file_path, "r",encoding='utf-8', errors='ignore') as f:
-        content = f.readlines()
-    data = []
-    for i in content:
-        data.append(i.split(","))
-    trans_data = []
-    for i in data:
-        trans_data.append(i[13])
-    return trans_data
-
 def preprocess(raw):
     data = []
     index = 0
@@ -33,8 +21,11 @@ def preprocess(raw):
             data.append(-1)
     return data
 
-def ploting(data):
-    ax = plt.scatter(data["index"], data[13],s=5)
+def ploting(data,na_data):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.scatter(data["index"], data[13],s=5)
+    ax.scatter(na_data, np.full_like(na_data, 250),s=20,c='r')
     plt.xticks(np.arange(min(data["index"]), max(data["index"]), 50))
 
 if __name__=="__main__":
@@ -45,7 +36,7 @@ if __name__=="__main__":
 
     # sns.stripplot(unknow_index,linewidth=3,size=0.5)
 
-    ploting(data)
+    ploting(data,unknow_index)
 
     # sns.pointplot(x="index", y=13, data=data, markers='o', size=0.8,linewidth=0)
     # ax = sns.stripplot(x="index", y=13, data=data, size=0.8,linewidth=2)
