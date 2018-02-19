@@ -13,7 +13,14 @@ def testSetGen(ratio):
     return result
 
 def algoFCFS(data):
-    return data #suppose data is indexed by time
+    result = []
+    startT = 0
+    endT = 0
+    for i in range(0,len(data)):
+        endT = startT + data[i][1]
+        result.append([data[i][0], startT, endT, data[i][1]])
+        startT = endT
+    return result
 
 def algoSJF(data):
     return sorted(data, key=lambda x: x[1])
@@ -33,7 +40,16 @@ def algoRR(data,qtime=10):
             result.append(x)
         else:
             pending.append([x[0], x[1]-qtime])
-            result.append([i[0], qtime])
+            result.append([x[0], qtime])
+    return result
+
+def eachDelayTime(data):
+    result = {}
+    for i in range(0,len(data)):
+        if data[i][0] in result:
+            result.update({data[i][0]: result[data[i][0]] + data[i][1]})
+        else:
+            result.update({data[i][0]: data[i][1]})
     return result
 
 if __name__ == "__main__":
@@ -44,7 +60,9 @@ if __name__ == "__main__":
 
     for i in testSetRatio:
         test = testSetGen(i)
-        print(algoRR(test))
+        # print(eachDelayTime(algoFCFS(test)))
         print("++++++++++++++++++++++++++")
-        print(test)
+        print(algoFCFS(test))
         print("--------------------------")
+        print(test)
+        print("^^^^^^^^^^^^^^^^^^^^^^^^^^")
