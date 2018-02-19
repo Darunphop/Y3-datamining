@@ -12,7 +12,7 @@ def testSetGen(ratio):
         result.append([i,tmp[i-1]])
     return result
 
-def algoFCFS(data):
+def toRangeList(data):
     result = []
     startT = 0
     endT = 0
@@ -22,8 +22,11 @@ def algoFCFS(data):
         startT = endT
     return result
 
+def algoFCFS(data):
+    return toRangeList(data)
+
 def algoSJF(data):
-    return sorted(data, key=lambda x: x[1])
+    return toRangeList(sorted(data, key=lambda x: x[1]))
 
 def algoRR(data,qtime=10):
     pending = []
@@ -41,28 +44,33 @@ def algoRR(data,qtime=10):
         else:
             pending.append([x[0], x[1]-qtime])
             result.append([x[0], qtime])
-    return result
+    return toRangeList(result)
 
 def eachDelayTime(data):
-    result = {}
+    n = 0
+    sum = 0
+    mask = np.zeros((len(data),), dtype=int)
     for i in range(0,len(data)):
-        if data[i][0] in result:
-            result.update({data[i][0]: result[data[i][0]] + data[i][1]})
-        else:
-            result.update({data[i][0]: data[i][1]})
-    return result
+        if mask[i] == 0:
+            mask[i] = 1
+            n += 1
+        sum += data[i][1]
+    return float(sum) / n
 
 if __name__ == "__main__":
     testSetRatio = []
-    testSetRatio.append([20,20,20]) #test set 1
-    # testSetRatio.append([30, 0,30])  #test set 2
-    # testSetRatio.append([20,20,20]) #test set 3
+    testSetRatio.append([15,30,15]) #test set 1
+    testSetRatio.append([30, 0,30])  #test set 2
+    testSetRatio.append([40,15,5]) #test set 3
 
     for i in testSetRatio:
         test = testSetGen(i)
         # print(eachDelayTime(algoFCFS(test)))
+        print(eachDelayTime(algoFCFS(test)))
         print("++++++++++++++++++++++++++")
-        print(algoFCFS(test))
+        # print(algoRR(test))
+        print(eachDelayTime(algoSJF(test)))
         print("--------------------------")
-        print(test)
+        # print(test)
+        print(eachDelayTime(algoRR(test)))
         print("^^^^^^^^^^^^^^^^^^^^^^^^^^")
