@@ -73,8 +73,8 @@ def delayTime(data):
 if __name__ == "__main__":
     testSetRatio = []
     testSetRatio.append([15,30,15]) #test set 1
-    testSetRatio.append([30, 0,30])  #test set 2
-    testSetRatio.append([40,15,5]) #test set 3
+    testSetRatio.append([30, 0,30]) #test set 2
+    testSetRatio.append([40,15,5])  #test set 3
     RRqt = []
     RRqt.append(5)
     RRqt.append(10)
@@ -82,14 +82,16 @@ if __name__ == "__main__":
 
     for i in testSetRatio:
         test = testSetGen(i)
-        # print(eachDelayTime(algoFCFS(test)))
-        print(delayTime(eachDelayTime(algoFCFS(test))))
+        print('[Dataset]')
+        s = '[' + ', '.join(str(e[1]) for e in test) + ']'
+        print(s)
+        print('\nFirst Come First Serve Algorithm')
+        print('Average waiting time = %.4f'% delayTime(eachDelayTime(algoFCFS(test))))
         print("++++++++++++++++++++++++++")
-        # print(algoRR(test))
-        print(delayTime(eachDelayTime(algoSJF(test))))
+        print('\nShort Job First Algorithm')
+        print('Average waiting time = %.4f'% delayTime(eachDelayTime(algoSJF(test))))
         print("--------------------------")
-        # print(test)
-        for i in RRqt:
-            print(delayTime(eachDelayTime(algoRR(test,i))))
-            # print(delayTime(algoRR(test),i))
+        print('\nRound Robin Algorithm')
+        for j in RRqt:
+            print('Average waiting time (QT = %2d) = %.4f'%  (j, delayTime(eachDelayTime(algoRR(test,j)))))
             print("^^^^^^^^^^^^^^^^^^^^^^^^^^")
