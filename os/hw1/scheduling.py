@@ -61,39 +61,35 @@ def eachDelayTime(data):
         index[data[i][0]-1].append(tmp)
     return index
 
-def delayTime(data,qt=0):
-    n = 0
-    sum = 0
-    mask = np.zeros((len(data),), dtype=int)
-    for i in range(0,len(data)):
-        sum += data[i][1] - mask[data[i][0]-1]
-        # print( str(sum)+" ="+str(data[i][1])+" - "+str(mask[data[i][0]-1]))
-        if mask[data[i][0]-1] == 0:
-            n += 1
-        mask[data[i][0]-1] += qt
-    # print(mask)
-    return float(sum) / n
+def delayTime(data):
+    x = []
+    for i in data:
+        tmp = i[0][0]
+        for j in range(1,len(i)):
+            tmp += i[j][0] - i[j-1][1]
+        x.append(tmp)
+    return float(sum(x)) / len(data)
 
 if __name__ == "__main__":
     testSetRatio = []
     testSetRatio.append([15,30,15]) #test set 1
-    # testSetRatio.append([30, 0,30])  #test set 2
-    # testSetRatio.append([40,15,5]) #test set 3
+    testSetRatio.append([30, 0,30])  #test set 2
+    testSetRatio.append([40,15,5]) #test set 3
     RRqt = []
     RRqt.append(5)
-    # RRqt.append(10)
-    # RRqt.append(20)
+    RRqt.append(10)
+    RRqt.append(20)
 
     for i in testSetRatio:
         test = testSetGen(i)
         # print(eachDelayTime(algoFCFS(test)))
-        # print(delayTime(algoFCFS(test)))
+        print(delayTime(eachDelayTime(algoFCFS(test))))
         print("++++++++++++++++++++++++++")
         # print(algoRR(test))
-        # print(delayTime(algoSJF(test)))
+        print(delayTime(eachDelayTime(algoSJF(test))))
         print("--------------------------")
         # print(test)
         for i in RRqt:
-            print(eachDelayTime(algoRR(test)))
+            print(delayTime(eachDelayTime(algoRR(test,i))))
             # print(delayTime(algoRR(test),i))
             print("^^^^^^^^^^^^^^^^^^^^^^^^^^")
