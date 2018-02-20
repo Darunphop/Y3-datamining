@@ -76,12 +76,12 @@ def delayTime(data):
 def dataPlot(data):
     global figc
     
-    # for i in range(0,len(data)):
-    #     fig = plt.figure(figc)
-    #     ax = fig.add_subplot(111)
-    #     ax.set_title('Test set %d'% i)
-    #     sns.kdeplot(data[i][0],shade=True)
-    #     figc += 1
+    for i in range(0,len(data)):
+        fig = plt.figure(figc)
+        ax = fig.add_subplot(111)
+        ax.set_title('Test set %d'% (i+1))
+        sns.kdeplot(data[i][0],shade=True)
+        figc += 1
 
     # fcfsP = [row[1] for row in data]
     # fig = plt.figure(figc)
