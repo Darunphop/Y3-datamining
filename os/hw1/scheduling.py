@@ -1,4 +1,6 @@
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 testSeed = [[1,10], [15,25], [30,40]]
 
@@ -10,7 +12,7 @@ def testSetGen(ratio):
     np.random.shuffle(tmp)
     for i in range(1,len(tmp)+1):
         result.append([i,tmp[i-1]])
-    return result
+    return result, tmp
 
 def toRangeList(data):
     result = []
@@ -70,6 +72,15 @@ def delayTime(data):
         x.append(tmp)
     return float(sum(x)) / len(data)
 
+def dataPlot(data):
+    for i in range(0,len(data)):
+        fig = plt.figure(i)
+        ax = fig.add_subplot(111)
+        ax.set_title('Test set %d'% i)
+        sns.kdeplot(data[i][0],shade=True)
+        # sns.distplot(dataset,color=None)
+    return
+
 if __name__ == "__main__":
     testSetRatio = []
     testSetRatio.append([15,30,15]) #test set 1
@@ -79,19 +90,30 @@ if __name__ == "__main__":
     RRqt.append(5)
     RRqt.append(10)
     RRqt.append(20)
-
+    result = []
+    o = 0
     for i in testSetRatio:
-        test = testSetGen(i)
+        test, dataset = testSetGen(i)
         print('[Dataset]')
         s = '[' + ', '.join(str(e[1]) for e in test) + ']'
         print(s)
+
         print('\nFirst Come First Serve Algorithm')
-        print('Average waiting time = %.4f'% delayTime(eachDelayTime(algoFCFS(test))))
+        x = delayTime(eachDelayTime(algoFCFS(test)))
+        print('Average waiting time = %.4f'% x)
         print("++++++++++++++++++++++++++")
         print('\nShort Job First Algorithm')
-        print('Average waiting time = %.4f'% delayTime(eachDelayTime(algoSJF(test))))
+        y = delayTime(eachDelayTime(algoSJF(test)))
+        print('Average waiting time = %.4f'% y)
         print("--------------------------")
         print('\nRound Robin Algorithm')
-        for j in RRqt:
-            print('Average waiting time (QT = %2d) = %.4f'%  (j, delayTime(eachDelayTime(algoRR(test,j)))))
+        z = []
+        for j in range(0,len(RRqt)):
+            z.append(delayTime(eachDelayTime(algoRR(test,RRqt[j]))))
+            print('Average waiting time (QT = %2d) = %.4f'%  (RRqt[j], z[j]))
             print("^^^^^^^^^^^^^^^^^^^^^^^^^^")
+        result.append([dataset,x,y,z])
+        o += 1
+    
+    dataPlot(result)
+    plt.show()
