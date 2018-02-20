@@ -3,6 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 testSeed = [[1,10], [15,25], [30,40]]
+figc = 0
 
 def testSetGen(ratio):
     result = []
@@ -73,12 +74,44 @@ def delayTime(data):
     return float(sum(x)) / len(data)
 
 def dataPlot(data):
+    global figc
+    
+    # for i in range(0,len(data)):
+    #     fig = plt.figure(figc)
+    #     ax = fig.add_subplot(111)
+    #     ax.set_title('Test set %d'% i)
+    #     sns.kdeplot(data[i][0],shade=True)
+    #     figc += 1
+
+    # fcfsP = [row[1] for row in data]
+    # fig = plt.figure(figc)
+    # ax = fig.add_subplot(111)
+    # ax.set_title('First Come First Serve Algorithm')
+    # x = np.arange(3)
+    # plt.bar(x, fcfsP)
+    # plt.xticks(x, ('Data set 1', 'Data set 2', 'Data set 3'))
+
+
     for i in range(0,len(data)):
-        fig = plt.figure(i)
-        ax = fig.add_subplot(111)
-        ax.set_title('Test set %d'% i)
-        sns.kdeplot(data[i][0],shade=True)
-        # sns.distplot(dataset,color=None)
+        color_set = ['#4480e2','#c244e2','#61c41f','#61c41f','#61c41f']
+        x = [u'First Come First Serve', u'Short Job First', u'Round Robin\nQT = 5', u'Round Robin\nQT = 10', u'Round Robin\nQT = 20']
+        y = data[i][1:3]
+        y.extend(data[i][3])
+        print(y)
+        fig, ax = plt.subplots()    
+        width = 0.50 # the width of the bars 
+        ind = np.arange(len(y))  # the x locations for the groups
+        barlist = ax.barh(ind, y, width, color="blue")
+        ax.set_yticks((ind+width/2)-(.25))
+        ax.set_yticklabels(x, minor=False)
+        ax.set_xlim(0,max(y)+150)
+        for j in range(0,len(barlist)):
+            barlist[j].set_color(color_set[j])
+        plt.title('Data set %d'% (i+1))
+        plt.xlabel('Average waiting time(ms)')
+        plt.ylabel('y')
+        for i, v in enumerate(y):
+            ax.text(v + 3, i - 0.1, str(round(v,4)), color='#211f18', fontweight='light')
     return
 
 if __name__ == "__main__":
