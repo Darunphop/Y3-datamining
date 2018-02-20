@@ -83,15 +83,6 @@ def dataPlot(data):
         sns.kdeplot(data[i][0],shade=True)
         figc += 1
 
-    # fcfsP = [row[1] for row in data]
-    # fig = plt.figure(figc)
-    # ax = fig.add_subplot(111)
-    # ax.set_title('First Come First Serve Algorithm')
-    # x = np.arange(3)
-    # plt.bar(x, fcfsP)
-    # plt.xticks(x, ('Data set 1', 'Data set 2', 'Data set 3'))
-
-
     for i in range(0,len(data)):
         color_set = ['#4480e2','#c244e2','#61c41f','#61c41f','#61c41f']
         x = [u'First Come First Serve', u'Short Job First', u'Round Robin\nQT = 5', u'Round Robin\nQT = 10', u'Round Robin\nQT = 20']
