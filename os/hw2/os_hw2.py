@@ -74,6 +74,7 @@ if __name__ == '__main__':
         plot = []
         res = np.full((3, variety[exp]), 0)
         reference = genReference(100, variety[exp])
+        print(reference)
         fig = plt.figure()
         ax = fig.gca()
         plt.title('Dataset '+str(exp+1))
