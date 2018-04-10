@@ -1,2 +1,4 @@
 /sheet
 /.vscode
+*.ipynb
+*.pyc
