@@ -3,9 +3,9 @@ import numpy as np
 class NeuralNetwork:
     class Node:
         def __init__(self):
-            input = []
-            output = 0.0
-            bias = 0.0
+            self.input = []
+            self.output = 0.0
+            self.bias = 0.0
 
         def activationFunction(self, input, f='sig', order=0):
             if order == 0:
@@ -20,7 +20,14 @@ class NeuralNetwork:
                 else:
                     fx = self.activationFunction(input,f,order-1)
                     return 1 - np.power(fx, 2)
+        
+        def getInput(self):
+            return self.input
+        def getOutput(self):
+            return self.output
 
+        def getSumWeight(self, weights)
+            pass
 
     data = 0
     def __init__(self):
@@ -30,4 +37,4 @@ if __name__ == '__main__':
     print('Hi')
     x = NeuralNetwork()
     y = x.Node()
-    print(y.activationFunction(3,'sig',1))
+    print(y.activationFunction(3,'sig',2))
