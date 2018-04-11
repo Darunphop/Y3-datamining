@@ -23,9 +23,10 @@ class NeuralNetwork:
 
     class LinearNode(Node):
         def __init__(self, n_input=[], n_w=[], n_b=0):
-            self.weight = n_w
-            self.bias = n_b
             super().__init__(n_input)
+            self.setWeight(n_w)
+            self.bias = n_b
+            
 
         def getSumWeight(self):
             sum = 0
@@ -63,7 +64,8 @@ class NeuralNetwork:
                     return 1 - np.power(fx, 2)
         
         def process(self):
-            super().process(self.activationFunction(self.getInput()[0], self.func))
+            fx = self.activationFunction(self.getInput(), self.func)
+            super().process(fx)
          # END ActivationNode class #
 
     data = 0
@@ -77,9 +79,10 @@ if __name__ == '__main__':
     x = NeuralNetwork()
     i = [1, 2, 3, 4]
     w = [-0.1, 0.3, -0.5, 0.1]
-    b = 0.5
+    b = 0.4
     n = x.LinearNode(i,w,b)
     n.process()
     print(n.getOutput())
-    # y = x.ActivationNode()
-    # print(y.activationFunction(3,'sig',2))
+    n1 = x.ActivationNode(n.getOutput(), 'sig')
+    n1.process()
+    print(n1.getOutput())
