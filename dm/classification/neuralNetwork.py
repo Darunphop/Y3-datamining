@@ -2,8 +2,8 @@ import numpy as np
 
 class NeuralNetwork:
     class Node:
-        def __init__(self):
-            self.input = []
+        def __init__(self, n_input=[]):
+            self.input = n_input
             self.output = 0.0
         
         def process(self, out):
@@ -22,10 +22,10 @@ class NeuralNetwork:
         # END Node class #
 
     class LinearNode(Node):
-        def __init__(self):
-            self.weight = []
-            self.bias = 0.0
-            super().__init__()
+        def __init__(self, n_input=[], n_w=[], n_b=0):
+            self.weight = n_w
+            self.bias = n_b
+            super().__init__(n_input)
 
         def getSumWeight(self):
             sum = 0
@@ -33,14 +33,20 @@ class NeuralNetwork:
                 sum += self.input[i] * self.weight[i]
             return sum
         def setWeight(self, n_weight):
-            self.weight = n_weight
+            if len(n_weight) == len(self.input):
+                self.weight = n_weight
+            else:
+                raise ValueError('Weigths size not match the Input size')
 
+        def process(self):
+            sumwb = self.getSumWeight() + self.bias
+            super().process(sumwb)
          # END LinearNode class #
 
     class ActivationNode(Node):
-        def __init__(self, f):
+        def __init__(self, n_input=[], f='sig'):
             self.func = f 
-            super().__init__()
+            super().__init__(n_input)
             
         def activationFunction(self, input, f='sig', order=0):
             if order == 0:
@@ -56,6 +62,8 @@ class NeuralNetwork:
                     fx = self.activationFunction(input,f,order-1)
                     return 1 - np.power(fx, 2)
         
+        def process(self):
+            super().process(self.activationFunction(self.getInput()[0], self.func))
          # END ActivationNode class #
 
     data = 0
@@ -67,5 +75,11 @@ class NeuralNetwork:
 if __name__ == '__main__':
     print('Hi')
     x = NeuralNetwork()
-    y = x.ActivationNode()
-    print(y.activationFunction(3,'sig',2))
+    i = [1, 2, 3, 4]
+    w = [-0.1, 0.3, -0.5, 0.1]
+    b = 0.5
+    n = x.LinearNode(i,w,b)
+    n.process()
+    print(n.getOutput())
+    # y = x.ActivationNode()
+    # print(y.activationFunction(3,'sig',2))
