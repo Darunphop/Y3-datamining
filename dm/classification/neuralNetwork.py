@@ -4,10 +4,44 @@ class NeuralNetwork:
     class Node:
         def __init__(self):
             self.input = []
-            self.weight = []
             self.output = 0.0
-            self.bias = 0.0
+        
+        def process(self, out):
+            self.setOutput(out)
 
+        def getInput(self):
+            return self.input
+        def getOutput(self):
+            return self.output
+
+        def setInput(self, n_input):
+            self.input = n_input
+        def setOutput(self, value):
+            self.output = value
+
+        # END Node class #
+
+    class LinearNode(Node):
+        def __init__(self):
+            self.weight = []
+            self.bias = 0.0
+            super().__init__()
+
+        def getSumWeight(self):
+            sum = 0
+            for i in range(len(self.input)):
+                sum += self.input[i] * self.weight[i]
+            return sum
+        def setWeight(self, n_weight):
+            self.weight = n_weight
+
+         # END LinearNode class #
+
+    class ActivationNode(Node):
+        def __init__(self, f):
+            self.func = f 
+            super().__init__()
+            
         def activationFunction(self, input, f='sig', order=0):
             if order == 0:
                 if f == 'sig':  #sigmoid
@@ -22,32 +56,7 @@ class NeuralNetwork:
                     fx = self.activationFunction(input,f,order-1)
                     return 1 - np.power(fx, 2)
         
-        def process(self, f='sig', type='linear'):  #linear / activation
-            out = 0
-            if type == 'linear':
-                out = self.getSumWeight() + self.bias
-            else:
-                out = self.activationFunction(self.input, f)
-            self.setOutput(out)
-
-        def getInput(self):
-            return self.input
-        def getOutput(self):
-            return self.output
-        def getSumWeight(self):
-            sum = 0
-            for i in range(len(self.input)):
-                sum += self.input[i] * self.weight[i]
-            return sum
-
-        def setInput(self, n_input):
-            self.input = n_input
-        def setWeight(self, n_weight):
-            self.weight = n_weight
-        def setOutput(self, value):
-            self.output = value
-
-        # END Node class #
+         # END ActivationNode class #
 
     data = 0
     def __init__(self):
@@ -58,5 +67,5 @@ class NeuralNetwork:
 if __name__ == '__main__':
     print('Hi')
     x = NeuralNetwork()
-    y = x.Node()
+    y = x.ActivationNode()
     print(y.activationFunction(3,'sig',2))
