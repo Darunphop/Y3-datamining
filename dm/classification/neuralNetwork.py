@@ -66,7 +66,11 @@ class NeuralNetwork:
         def process(self):
             fx = self.activationFunction(self.getInput(), self.func)
             super().process(fx)
-         # END ActivationNode class #
+        # END ActivationNode class #
+    
+    class Layer:
+        def __init__(self, s):
+                self.size = s
 
     data = 0
     def __init__(self):
