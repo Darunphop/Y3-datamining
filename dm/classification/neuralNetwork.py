@@ -4,6 +4,7 @@ class NeuralNetwork:
     class Node:
         def __init__(self):
             self.input = []
+            self.weight = []
             self.output = 0.0
             self.bias = 0.0
 
@@ -21,17 +22,38 @@ class NeuralNetwork:
                     fx = self.activationFunction(input,f,order-1)
                     return 1 - np.power(fx, 2)
         
+        def process(self, f='sig', type='linear'):  #linear / activation
+            out = 0
+            if type == 'linear':
+                out = self.getSumWeight() + self.bias
+            else:
+                out = self.activationFunction(self.input, f)
+            self.setOutput(out)
+
         def getInput(self):
             return self.input
         def getOutput(self):
             return self.output
+        def getSumWeight(self):
+            sum = 0
+            for i in range(len(self.input)):
+                sum += self.input[i] * self.weight[i]
+            return sum
 
-        def getSumWeight(self, weights)
-            pass
+        def setInput(self, n_input):
+            self.input = n_input
+        def setWeight(self, n_weight):
+            self.weight = n_weight
+        def setOutput(self, value):
+            self.output = value
+
+        # END Node class #
 
     data = 0
     def __init__(self):
         self.data = 1
+    
+    # END NeuralNetwork class #
 
 if __name__ == '__main__':
     print('Hi')
