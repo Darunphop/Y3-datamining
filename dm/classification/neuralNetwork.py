@@ -2,10 +2,11 @@ import numpy as np
 
 class NeuralNetwork:
     class Layer:
-        def __init__(self, s, input):
+        def __init__(self, s, input, type):
                 self.size = s
                 self.input = []
                 self.nodes = []
+                self.type = 'fully_connected'   # fully / direct
 
         def setupNodes(self):
             for i in range(self.size):
