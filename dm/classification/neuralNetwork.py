@@ -2,23 +2,29 @@ import numpy as np
 
 class NeuralNetwork:
     class Layer:
-        def __init__(self, s, input, type):
+        def __init__(self, s, input, type='fully'):
                 self.size = s
                 self.input = []
                 self.nodes = []
-                self.type = 'fully_connected'   # fully / direct
+                self.type = 'fully'   # fully / direct
+                self.setupNodes()
 
         def setupNodes(self):
-            for i in range(self.size):
-                i_size = len(self.input)
-                tmpNode = self.LinearNode(self.input, self.getRandW(i_size), self.getRandBias(i_size))
-                self.nodes.append(tmpNode)
+            if self.type == 'fully':
+                for i in range(self.size):
+                    i_size = len(self.input)
+                    tmp_node = self.LinearNode(self.input, self.getRandW(i_size), self.getRandBias(i_size))
+                    self.nodes.append(tmp_node)
+            else:
+                for i in range(self.size):
+                    tmp_node = self.ActivationNode(self.input[i], 'sig')
+                    self.nodes.append(tmp_node)
 
 
         def getRandW(self, size):
-            return 2 * np.random.random(size) - 1   #[-1,1]
+            return 4 * np.random.random(size) - 2   #(-2,2)
         def getRandBias(self, size):
-            return np.random.random(size)   #[0,1]
+            return 2 * np.random.random(size) - 1   #(-1,1)
 
         class Node:
             def __init__(self, n_input=[]):
