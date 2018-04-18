@@ -44,6 +44,7 @@ class NeuralNetwork:
                 # print('in layer process', tmp_out)
                 tmp.append(tmp_out)
             self.output = tmp
+            return tmp
 
         def getInput(self):
             if self.input[0].__class__ == list:
@@ -57,6 +58,9 @@ class NeuralNetwork:
             return 4 * np.random.random(size) - 2   #(-2,2)
         def getRandBias(self, size=1):
             return 2 * np.random.random(size) - 1   #(-1,1)
+
+        def setInput(self, input):
+            self.input = input
 
         class Node:
             def __init__(self, n_input=[]):
@@ -184,9 +188,12 @@ class NeuralNetwork:
 
     def allProcess(self):
         print('\nBegin All process----------')
-        for i in self.layers:
+        interm = []
+        for n, i in enumerate(self.layers):
             print('Begin New Layer')
-            i.process()
+            if n != 0:
+                i.setInput(interm)
+            interm = i.process()
         print('End All process----------\n')
 
     # END NeuralNetwork class #
