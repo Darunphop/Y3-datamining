@@ -142,9 +142,10 @@ class NeuralNetwork:
                 super().process(fx)
             # END ActivationNode class #
 
-    def __init__(self, n):
+    def __init__(self, n, lr):
         self.input = np.full(n, 0)
         self.layers = []
+        self.learning_rate = lr
     
     def addHidden(self, n):
         layer_size = len(self.layers)
@@ -233,9 +234,7 @@ class NeuralNetwork:
             grad.append(g_tmp)
             # print(t)
             o = []
-        # print(g for g in grad)
-        for g in grad:
-            print(g)
+
 
         return 0
     

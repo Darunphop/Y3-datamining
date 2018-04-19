@@ -10,7 +10,7 @@ if __name__ == '__main__':
             print('%2d   ::   Train size : %d | Test size : %d'%(n+1, len(i[0]), len(i[1])))
             print('%s'%(''.ljust(50,'-')))
 
-            nn = neuralNetwork.NeuralNetwork(len(i[0])-1)
+            nn = neuralNetwork.NeuralNetwork(len(i[0])-1, 0.5)
             # nn.addHidden(10)
             nn.addHidden(5)
             nn.addHidden(2)
