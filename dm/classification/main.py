@@ -15,10 +15,16 @@ if __name__ == '__main__':
             nn.addHidden(5)
             nn.addHidden(2)
             nn.addHidden(1)
-            nn.getLayerList()
-            
+            # nn.getLayerList()
+            o = nn.getOutput()
+            print(o)
+
             input.normalize(i[0])
             for j in range(len(i[0])):
                 inp = list(i[0].iloc[j][:-1])
+                nn.setInput(inp)
+                nn.allProcess()
+                o = nn.getOutput()
+                print(o)
                 # print(inp)
                 # print(j)

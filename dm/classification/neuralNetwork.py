@@ -168,11 +168,11 @@ class NeuralNetwork:
 
     def setInput(self, input):
         size = len(self.layers)
-        print('Old input :', self.getInput())
+        # print('Old input :', self.getInput())
         self.input = input
         if size != 0:
             self.layers[0].input = input
-        print('New input :', self.getInput())
+        # print('New input :', self.getInput())
 
     def getLayerList(self):
         for i in self.layers:
@@ -186,16 +186,20 @@ class NeuralNetwork:
     def getOutput(self):
         return self.layers[-1:][0].getOutput()
 
-    def allProcess(self):
-        print('\nBegin All process----------')
+    def allProcess(self, v=False):
+        if v:
+            print('\nBegin All process----------')
         interm = []
         for n, i in enumerate(self.layers):
-            print('Begin New Layer')
+            if v:
+                print('Begin New Layer')
             if n != 0:
                 i.setInput(interm)
             interm = i.process()
-        print('End All process----------\n')
+        if v:
+            print('End All process----------\n')
 
+    
     # END NeuralNetwork class #
 
 if __name__ == '__main__':
