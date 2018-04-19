@@ -1,4 +1,5 @@
 import numpy as np
+import copy as cp
 
 class NeuralNetwork:
     class Layer:
@@ -55,7 +56,8 @@ class NeuralNetwork:
         def getOutput(self):
             return self.output
         def getRandW(self, size):
-            return 4 * np.random.random(size) - 2   #(-2,2)
+            return 1 * np.random.random(size) - 0   #(-1,1)
+            # return np.full(size,0)
         def getRandBias(self, size=1):
             return 2 * np.random.random(size) - 1   #(-1,1)
 
@@ -88,6 +90,22 @@ class NeuralNetwork:
                 self.setWeight(n_w)
                 self.bias = n_b
                 
+            def applyW(self, delta):
+                # print('DELTA ', len(delta))
+                # print('W ', len(self.weight))
+                
+                w_tmp = []
+                # print(w_tmp)
+                for n, i in enumerate(delta):
+                    # tmp = []
+                    dump = self.weight[n]
+                    # print('Before', self.weight[n])
+                    dump += i
+                    # print('applying ', i)
+                    # print('After', self.weight[n])
+                    w_tmp.append(dump)
+                # print('New tmp',w_tmp)
+                self.weight = w_tmp
 
             def getSumWeight(self):
                 sum = 0
@@ -142,7 +160,7 @@ class NeuralNetwork:
                 super().process(fx)
             # END ActivationNode class #
 
-    def __init__(self, n, lr):
+    def __init__(self, n, lr=0.5):
         self.input = np.full(n, 0)
         self.layers = []
         self.learning_rate = lr
@@ -182,8 +200,12 @@ class NeuralNetwork:
         for i in self.layers:
             print('%6s | %d Nodes'%(i.type, i.size))
             for j in i.nodes:
-                print('%sInput :%s'%(''.ljust(7), j.input))
-                print('%sOutput :%s'%(''.ljust(10), j.output))
+                # print('%sInput :%s'%(''.ljust(7), j.input))
+                try:
+                    print('%sWeight :%s'%(''.ljust(9), j.weight))
+                except:
+                    pass
+                # print('%sOutput :%s'%(''.ljust(11), j.output))
             print('\n')
     def getInput(self):
         return self.input
@@ -234,8 +256,40 @@ class NeuralNetwork:
             grad.append(g_tmp)
             # print(t)
             o = []
+        # print(grad)
+        o = []
+        for n, i in enumerate(reversed(self.layers)):   #apply weight
+            count = 0
+
+            if n % 2 == 0:
+                o = i.getOutput()
+                continue
+            else:
+                for nj, j in enumerate(i.nodes):
+                    delta = []
+                    # print('Before',j.weight[0])
+                    for nx, x in enumerate(j.weight):
+                        # print('BEFORE', j.weight[nx])
+                        dt = 0 - self.learning_rate * grad[count][nj] * o[nj]
+                        # print(delta)
+                        delta.append(dt)
+                        # j.weight[nx] = delta
+                        # print('AFTER', j.weight[nx])
+                    # print(delta)
+                    j.applyW(delta)
+                    # print('after',j.weight[0])
+                    # print('Before',j.bias)
+                    j.bias = j.bias - self.learning_rate * grad[count][nj] * j.bias
+                    # print('after', j.bias)
+                    # delta = [d*self.learning_rate for d in grad[count][nj]]
+                    # print()
+                    # print(delta)
+                    # j.applyW(delta)
+                count += 1
+        self.allProcess()
 
 
+                
         return 0
     
     def classGen(self, out, size):
@@ -248,7 +302,7 @@ class NeuralNetwork:
 
 if __name__ == '__main__':
     print('Hi')
-    z = NeuralNetwork(5)
+    z = NeuralNetwork(5,0.5)
     # ip = [[1,1],[2,1],[4,0],[2,1],[5,5]]
     ip = [0.01,0.39,0.41,0.22,0.6]
     z.addHidden(5)
