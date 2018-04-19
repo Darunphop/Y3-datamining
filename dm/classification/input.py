@@ -39,11 +39,8 @@ def kFold(k, data):
 
     return res
 
-def normalize(input, output_s):
-    res = []
-    num_attr = input.shape[1]
-
-    print(input.head(5))
+def normalize(input):
+    # print(input.head(5))
     input['school'] = input['school'].apply(lambda x:binary('GP', x))
     input['sex'] = input['sex'].apply(lambda x:binary('F', x))
     input['age'] = input['age'].apply(lambda x:scaling(15, 22, x))
@@ -74,14 +71,11 @@ def normalize(input, output_s):
     input['Walc'] = input['Walc'].apply(lambda x:scaling(1, 5, x))
     input['health'] = input['health'].apply(lambda x:scaling(1, 5, x))
     input['absences'] = input['absences'].apply(lambda x:scaling(0, 93, x))
+    # print(input.head(5))
+    input['G1'] = input['G1'].apply(lambda x:scaling(0, 20, x))
+    input['G2'] = input['G2'].apply(lambda x:scaling(0, 20, x))
+    input['G3'] = input['G3'].apply(lambda x:scaling(0, 20, x))
 
-
-
-
-
-
-    print(input.head(5))
-    return res
 
 def scaling(min, max, x):
     return (x - min)/(max - min)
