@@ -39,6 +39,29 @@ def kFold(k, data):
 
     return res
 
+def normalize(input, output_s):
+    res = []
+    num_attr = input.shape[1]
+
+    # input['school'].replace(to_replace='GP', value=0, inplace=True)
+    # input['school'].replace(to_replace='MS', value=1, inplace=True)
+    
+    # input['sex'].replace(to_replace='F', value=0, inplace=True)
+    # input['sex'].replace(to_replace='M', value=1, inplace=True)
+
+    # input['sex'].replace(to_replace='F', value=0, inplace=True)
+    # input['sex'].replace(to_replace='M', value=1, inplace=True)
+    # input.set_value('school',0,555)
+    # print(input)
+    print(input['age'].head(5))
+    input['age'] = input['age'].apply(lambda x:scaling(15, 22, x))
+    print(input['age'].head(5))
+    return res
+
+def scaling(min, max, x):
+    # print((x - min)/(max - min))
+    return (x - min)/(max - min)
+
 if __name__ == '__main__':
     data = loadFile(1)
     sff_data = data.sample(frac=1).sample(frac=1)
