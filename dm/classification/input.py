@@ -54,6 +54,30 @@ def normalize(input, output_s):
     input['Fedu'] = input['Fedu'].apply(lambda x:scaling(0, 4, x))
     input['Mjob'] = input['Mjob'].apply(lambda x:nominal(['teacher', 'health', 'services', 'at_home', 'other'], x))
     input['Fjob'] = input['Fjob'].apply(lambda x:nominal(['teacher', 'health', 'services', 'at_home', 'other'], x))
+    input['reason'] = input['reason'].apply(lambda x:nominal(['home', 'reputation', 'course', 'other'], x))
+    input['guardian'] = input['guardian'].apply(lambda x:nominal(['mother', 'father', 'other'], x))
+    input['traveltime'] = input['traveltime'].apply(lambda x:scaling(1, 4, x))
+    input['studytime'] = input['studytime'].apply(lambda x:scaling(1, 4, x))
+    input['failures'] = input['failures'].apply(lambda x:scaling(1, 4, x))
+    input['schoolsup'] = input['schoolsup'].apply(lambda x:binary('yes', x))
+    input['famsup'] = input['famsup'].apply(lambda x:binary('yes', x))
+    input['paid'] = input['paid'].apply(lambda x:binary('yes', x))
+    input['activities'] = input['activities'].apply(lambda x:binary('yes', x))
+    input['nursery'] = input['nursery'].apply(lambda x:binary('yes', x))
+    input['higher'] = input['higher'].apply(lambda x:binary('yes', x))
+    input['internet'] = input['internet'].apply(lambda x:binary('yes', x))
+    input['romantic'] = input['romantic'].apply(lambda x:binary('yes', x))
+    input['famrel'] = input['famrel'].apply(lambda x:scaling(1, 5, x))
+    input['freetime'] = input['freetime'].apply(lambda x:scaling(1, 5, x))
+    input['goout'] = input['goout'].apply(lambda x:scaling(1, 5, x))
+    input['Dalc'] = input['Dalc'].apply(lambda x:scaling(1, 5, x))
+    input['Walc'] = input['Walc'].apply(lambda x:scaling(1, 5, x))
+    input['health'] = input['health'].apply(lambda x:scaling(1, 5, x))
+    input['absences'] = input['absences'].apply(lambda x:scaling(0, 93, x))
+
+
+
+
 
 
     print(input.head(5))
