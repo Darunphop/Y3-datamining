@@ -26,11 +26,17 @@ def findMid(data, attr):
         if mid <= 0:
             return n
     
-def buildTree(data, root):
+def buildTree(data, root, attr):
     node = DecisionTree.Node(root)
-    if len(node.root) <= 1:
+    if len(node.target) <= 1:
         return node
     else:
-        
+        print(root)
+        m_p = findMid(data, attr)
+        l_t = root[:m_p+1]
+        r_t = root[m_p-1:]
+        print(l_t, r_t)
+        # df.loc[df['column_name'] == some_value]
+        data.loc[data['G3'] <= l_t[-1:][0]]
 if __name__ == '__main__':
     print('HI')
