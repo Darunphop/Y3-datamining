@@ -139,8 +139,8 @@ class NeuralNetwork:
                 super().process(fx)
             # END ActivationNode class #
 
-    def __init__(self):
-        self.input = [0,0,0,0,0]
+    def __init__(self, n):
+        self.input = np.full(n, 0)
         self.layers = []
     
     def addHidden(self, n):
@@ -200,27 +200,12 @@ class NeuralNetwork:
 
 if __name__ == '__main__':
     print('Hi')
-    z = NeuralNetwork()
+    z = NeuralNetwork(5)
     # ip = [[1,1],[2,1],[4,0],[2,1],[5,5]]
     ip = [0.01,0.39,0.41,0.22,0.6]
-    ip2 = [0]
-    # y = z.Layer(3, ip2)
-    # print('input',y.input)
-    # print(y.getOutput())
-    # y.process()
-    # out1 = y.getOutput()
-    # l2 = z.Layer(3, out1, 'direct')
-    # l2.process()
-    # out2 = l2.getOutput()
-    # l3 = z.Layer(2, out2)
-    # l3.process()
-    # out3 = l3.getOutput()
-    # print('out1', out1)
-    # print('out2', out2)
-    # print('out3', out3)
-    # z.addHidden(10)
     z.addHidden(5)
-    z.addHidden(2)
+    z.addHidden(4)
+    z.addHidden(3)
     z.getLayerList()
     z.allProcess()
     print(z.getOutput())
