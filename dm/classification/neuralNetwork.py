@@ -105,6 +105,9 @@ class NeuralNetwork:
                 else:
                     raise ValueError('Weigths size not match the Input size')
 
+            def getWeight(self):
+                return self.weight
+
             def process(self):
                 # print('In node BIAS', self.bias)
                 # print('In node W', self.getSumWeight())
@@ -202,9 +205,10 @@ class NeuralNetwork:
     def classify(self):
         return np.argmax(self.getOutput())
 
-    def train(self, input):
+    def train(self, input, expect):
         self.setInput(input)
         self.allProcess()
+        exp = self.classGen(int(expect),len(self.layers[-1:][0].getOutput()))
         grad = []
         o = []
         for n, i in enumerate(reversed(self.layers)):   #find gradiant
@@ -214,20 +218,33 @@ class NeuralNetwork:
                     o.append([j, i.nodes[0].activationFunction(j,order=1)])
                 continue
             g_tmp = []
-            for j in i.nodes:
+            for nj, j in enumerate(i.nodes):
                 dedn = 0
                 if n == 1:
-                    dedn = 0
-            print(o)
+                    dedn = o[nj][0] - exp[nj]
+                    # print(dedn)
+                else:
+                    sum = 0
+                    for nk, k in enumerate(grad[-1:][0]):
+                        sum += k* self.layers[(len(self.layers)-1)-(n-2)].nodes[nk].getWeight()[nj]
+                        # print(nk)
+                    dedn = sum
+                g_tmp.append(dedn*o[nj][1])
+            grad.append(g_tmp)
+            # print(t)
             o = []
+        # print(g for g in grad)
+        for g in grad:
+            print(g)
 
         return 0
     
     def classGen(self, out, size):
         t = np.full(size, 0)
         t[out] = 1
+        # print(t)
         return t
-        
+
     # END NeuralNetwork class #
 
 if __name__ == '__main__':

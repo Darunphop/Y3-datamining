@@ -14,7 +14,7 @@ if __name__ == '__main__':
             # nn.addHidden(10)
             nn.addHidden(5)
             nn.addHidden(2)
-            # nn.addHidden(21)
+            nn.addHidden(21)
             # nn.getLayerList()
             # o = nn.getOutput()
             # print(o)
@@ -23,7 +23,8 @@ if __name__ == '__main__':
             for j in range(len(i[0])):  #feed each row
                 if 0 <= j < 1:
                     inp = list(i[0].iloc[j][:-1])
-                    nn.train(inp)
+                    expect = i[0].iloc[j][-1:]
+                    nn.train(inp, expect)
                     # nn.getLayerList()
                     # o = nn.getOutput()
                     # o = nn.classify()
