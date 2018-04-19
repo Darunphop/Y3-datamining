@@ -199,7 +199,35 @@ class NeuralNetwork:
         if v:
             print('End All process----------\n')
 
+    def classify(self):
+        return np.argmax(self.getOutput())
+
+    def train(self, input):
+        self.setInput(input)
+        self.allProcess()
+        grad = []
+        o = []
+        for n, i in enumerate(reversed(self.layers)):   #find gradiant
+            if n % 2 == 0:
+                ot = i.getOutput()
+                for j in ot:
+                    o.append([j, i.nodes[0].activationFunction(j,order=1)])
+                continue
+            g_tmp = []
+            for j in i.nodes:
+                dedn = 0
+                if n == 1:
+                    dedn = 0
+            print(o)
+            o = []
+
+        return 0
     
+    def classGen(self, out, size):
+        t = np.full(size, 0)
+        t[out] = 1
+        return t
+        
     # END NeuralNetwork class #
 
 if __name__ == '__main__':
