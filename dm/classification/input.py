@@ -43,24 +43,32 @@ def normalize(input, output_s):
     res = []
     num_attr = input.shape[1]
 
-    # input['school'].replace(to_replace='GP', value=0, inplace=True)
-    # input['school'].replace(to_replace='MS', value=1, inplace=True)
-    
-    # input['sex'].replace(to_replace='F', value=0, inplace=True)
-    # input['sex'].replace(to_replace='M', value=1, inplace=True)
-
-    # input['sex'].replace(to_replace='F', value=0, inplace=True)
-    # input['sex'].replace(to_replace='M', value=1, inplace=True)
-    # input.set_value('school',0,555)
-    # print(input)
-    print(input['age'].head(5))
+    print(input.head(5))
+    input['school'] = input['school'].apply(lambda x:binary('GP', x))
+    input['sex'] = input['sex'].apply(lambda x:binary('F', x))
     input['age'] = input['age'].apply(lambda x:scaling(15, 22, x))
-    print(input['age'].head(5))
+    input['address'] = input['address'].apply(lambda x:binary('U', x))
+    input['famsize'] = input['famsize'].apply(lambda x:binary('LE3', x))
+    input['Pstatus'] = input['Pstatus'].apply(lambda x:binary('T', x))
+    input['Medu'] = input['Medu'].apply(lambda x:scaling(0, 4, x))
+    input['Fedu'] = input['Fedu'].apply(lambda x:scaling(0, 4, x))
+    input['Mjob'] = input['Mjob'].apply(lambda x:nominal(['teacher', 'health', 'services', 'at_home', 'other'], x))
+    input['Fjob'] = input['Fjob'].apply(lambda x:nominal(['teacher', 'health', 'services', 'at_home', 'other'], x))
+
+
+    print(input.head(5))
     return res
 
 def scaling(min, max, x):
-    # print((x - min)/(max - min))
     return (x - min)/(max - min)
+
+def binary(a, x):
+    return 1 if x == a else 0
+
+def nominal(p_list, x):
+    for n, i in enumerate(p_list):
+        if i == x:
+            return scaling(0, len(p_list)-1, n)
 
 if __name__ == '__main__':
     data = loadFile(1)
