@@ -1,7 +1,5 @@
 import input
-
-class Node:
-    bias = 0.0
+import neuralNetwork
 
 if __name__ == '__main__':
     pass
