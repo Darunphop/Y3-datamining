@@ -55,7 +55,7 @@ def normalize(input):
     input['guardian'] = input['guardian'].apply(lambda x:nominal(['mother', 'father', 'other'], x))
     input['traveltime'] = input['traveltime'].apply(lambda x:scaling(1, 4, x))
     input['studytime'] = input['studytime'].apply(lambda x:scaling(1, 4, x))
-    input['failures'] = input['failures'].apply(lambda x:scaling(1, 4, x))
+    input['failures'] = abs(input['failures'].apply(lambda x:scaling(1, 4, x)))
     input['schoolsup'] = input['schoolsup'].apply(lambda x:binary('yes', x))
     input['famsup'] = input['famsup'].apply(lambda x:binary('yes', x))
     input['paid'] = input['paid'].apply(lambda x:binary('yes', x))

@@ -177,6 +177,7 @@ class NeuralNetwork:
         # print('IP ',ip)
         self.addActivationLayer(n, ip)
         self.allProcess()
+        # print('ADD HIDDEN OK')
 
     def addLinearLayer(self, n, input):
         tmp_layer = self.Layer(n, input)
@@ -203,6 +204,8 @@ class NeuralNetwork:
                 # print('%sInput :%s'%(''.ljust(7), j.input))
                 try:
                     print('%sWeight :%s'%(''.ljust(9), j.weight))
+                    print('\n')
+                    print('%sBias :%s'%(''.ljust(9), j.bias))
                 except:
                     pass
                 # print('%sOutput :%s'%(''.ljust(11), j.output))
@@ -270,7 +273,9 @@ class NeuralNetwork:
                     # print('Before',j.weight[0])
                     for nx, x in enumerate(j.weight):
                         # print('BEFORE', j.weight[nx])
-                        dt = 0 - self.learning_rate * grad[count][nj] * o[nj]
+                        a = grad[count][nj]
+                        b = o[nj]
+                        dt = 0 - self.learning_rate * a * b
                         # print(delta)
                         delta.append(dt)
                         # j.weight[nx] = delta
