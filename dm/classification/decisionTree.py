@@ -27,8 +27,6 @@ class DecisionTree:
     #   END Node
     def __init__(self, target):
         self.tree = []
-
-
 #   END DecisionTree
 
 def findMid(data, attr):
@@ -37,7 +35,6 @@ def findMid(data, attr):
     # print(agg[attr].max())
     mid = (agg[attr].max() - agg[attr].min())/2
     return mid
-
     
 def buildTree(data, root, attr, count=1 ):
     root_node = root

@@ -21,28 +21,20 @@ class NeuralNetwork:
                     # print('rand_b', rand_b)
                     tmp_node = self.LinearNode(self.getInput(), rand_w, rand_b)
                     self.nodes.append(tmp_node)
-                    # print('Added fully node Successful')
             else:
                 for i in range(self.size):
-                    # print(self.getInput()[i])
                     tmp_node = self.ActivationNode(self.getInput()[i], 'sig')
                     self.nodes.append(tmp_node)
-                    # print('Added Direct successful')
-            # print('setup', self.input)
 
         def process(self):
             tmp = []
             for n, i in enumerate(self.nodes):
                 if self.type == 'fully':
-                    # print('ib layer process', self.getInput())
                     i.setInput(self.getInput())
                 else:
-                    # print(self.getInput()[n])
                     i.setInput(self.getInput()[n])
                 i.process()
                 tmp_out = i.getOutput()
-                # print('i.input',i.input)
-                # print('in layer process', tmp_out)
                 tmp.append(tmp_out)
             self.output = tmp
             return tmp
@@ -57,7 +49,6 @@ class NeuralNetwork:
             return self.output
         def getRandW(self, size):
             return 1 * np.random.random(size) - 0   #(-1,1)
-            # return np.full(size,0)
         def getRandBias(self, size=1):
             return 2 * np.random.random(size) - 1   #(-1,1)
 
@@ -95,7 +86,6 @@ class NeuralNetwork:
                 # print('W ', len(self.weight))
                 
                 w_tmp = []
-                # print(w_tmp)
                 for n, i in enumerate(delta):
                     # tmp = []
                     dump = self.weight[n]
@@ -109,13 +99,8 @@ class NeuralNetwork:
 
             def getSumWeight(self):
                 sum = 0
-                # print('W',self.weight)
                 for i in range(len(self.input)):
-                    # print(i)
-                    # print('In getSumW', self.input[i])
-                    # print('In getSumW', self.weight[i])
                     sum += self.input[i] * self.weight[i]
-                # print('SUM is', sum)
                 return sum
             def setWeight(self, n_weight):
                 if len(n_weight) == len(self.input):
@@ -127,11 +112,7 @@ class NeuralNetwork:
                 return self.weight
 
             def process(self):
-                # print('In node BIAS', self.bias)
-                # print('In node W', self.getSumWeight())
-                # print('process bias', self.bias)
                 sumwb = self.getSumWeight() + self.bias
-                # print('sum inprocess is', sumwb)
                 super().process(sumwb)
             # END LinearNode class #
 
@@ -155,7 +136,6 @@ class NeuralNetwork:
                         return 1 - np.power(fx, 2)
             
             def process(self):
-                # print('In activate',self.getInput())
                 fx = self.activationFunction(self.getInput(), self.func)
                 super().process(fx)
             # END ActivationNode class #
@@ -174,10 +154,8 @@ class NeuralNetwork:
             ip = self.layers[layer_size-1].getOutput()
         self.addLinearLayer(n, ip)
         ip = self.layers[layer_size].getOutput()
-        # print('IP ',ip)
         self.addActivationLayer(n, ip)
         self.allProcess()
-        # print('ADD HIDDEN OK')
 
     def addLinearLayer(self, n, input):
         tmp_layer = self.Layer(n, input)
@@ -191,11 +169,9 @@ class NeuralNetwork:
 
     def setInput(self, input):
         size = len(self.layers)
-        # print('Old input :', self.getInput())
         self.input = input
         if size != 0:
             self.layers[0].input = input
-        # print('New input :', self.getInput())
 
     def getLayerList(self):
         for i in self.layers:
@@ -248,18 +224,15 @@ class NeuralNetwork:
                 dedn = 0
                 if n == 1:
                     dedn = o[nj][0] - exp[nj]
-                    # print(dedn)
                 else:
                     sum = 0
                     for nk, k in enumerate(grad[-1:][0]):
                         sum += k* self.layers[(len(self.layers)-1)-(n-2)].nodes[nk].getWeight()[nj]
-                        # print(nk)
                     dedn = sum
                 g_tmp.append(dedn*o[nj][1])
             grad.append(g_tmp)
-            # print(t)
             o = []
-        # print(grad)
+
         o = []
         for n, i in enumerate(reversed(self.layers)):   #apply weight
             count = 0
@@ -270,26 +243,13 @@ class NeuralNetwork:
             else:
                 for nj, j in enumerate(i.nodes):
                     delta = []
-                    # print('Before',j.weight[0])
                     for nx, x in enumerate(j.weight):
-                        # print('BEFORE', j.weight[nx])
                         a = grad[count][nj]
                         b = o[nj]
                         dt = 0 - self.learning_rate * a * b
-                        # print(delta)
                         delta.append(dt)
-                        # j.weight[nx] = delta
-                        # print('AFTER', j.weight[nx])
-                    # print(delta)
                     j.applyW(delta)
-                    # print('after',j.weight[0])
-                    # print('Before',j.bias)
                     j.bias = j.bias - self.learning_rate * grad[count][nj] * j.bias
-                    # print('after', j.bias)
-                    # delta = [d*self.learning_rate for d in grad[count][nj]]
-                    # print()
-                    # print(delta)
-                    # j.applyW(delta)
                 count += 1
         self.allProcess()
 
@@ -300,7 +260,6 @@ class NeuralNetwork:
     def classGen(self, out, size):
         t = np.full(size, 0)
         t[out] = 1
-        # print(t)
         return t
 
     # END NeuralNetwork class #
