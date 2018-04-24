@@ -21,7 +21,7 @@ def kmeans(dataSet, k):
         diff = sum([distant(centroids[i], o_centroids[i]) for i in range(len(centroids))])
         print('This diff :',diff,'i :', iterations)
     
-    return centroids
+    return centroids, labels
 
 def randomCentroids(attr, k):
     res = []
@@ -64,6 +64,17 @@ def findMean(labels, s_attr=33):
         if tmp == []:
             print('reinitialize centroid')
             tmp = list(np.random.rand(s_attr))
+        res.append(tmp)
+    return np.asarray(res)
+
+def evalLabels(labels):
+    k = len(labels)
+    res = []
+    for i in labels:
+        tmp = []
+        for j in i:
+            # print(j)
+            tmp.append(j[-1:][0])
         res.append(tmp)
     return np.asarray(res)
 
