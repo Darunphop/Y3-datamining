@@ -6,11 +6,20 @@ def kmeans(dataSet, k):
     
     # Initialize book keeping vars.
     iterations = 0
+    diff = 9999
     o_centroids = None
     epsilon = 0.001
 
-    while stopCondition(centroids, o_centroids, iterations):
-        pass
+    while stopCondition(diff, iterations, epsilon):
+        o_centroids = centroids
+        iterations += 1
+
+        labels = getLabels(dataSet, centroids)
+
+        centroids = findMean(labels)
+
+        diff = sum([distant(centroids[i], o_centroids[i]) for i in range(len(centroids))])
+        print('This diff :',diff,'i :', iterations)
     
     return centroids
 
@@ -24,17 +33,19 @@ def randomCentroids(attr, k):
     return res
 
 def distant(a, b):
+    # print(a,b)
     return np.sqrt(sum((a - b) ** 2))
 
-def stopCondition(n_centroids, o_centroids, iterations, epsilon=0.1, max_it = 1000):
-    n_attr = len(n_centroids)
-    dif_c = sum([distant(n_centroids[i], o_centroids[i]) for i in range(n_attr)])
-    print(dif_c)
+def stopCondition(dif_c, iterations, epsilon=0.1, max_it = 1000):
+    # n_attr = len(n_centroids)
+    # dif_c = sum([distant(n_centroids[i], o_centroids[i]) for i in range(n_attr)])
+    # print(dif_c)
     return dif_c > epsilon and iterations < max_it
 
 def getLabels(data, centroids):
     res = [[] for i in range(len(centroids))]
     for i in data:
+        # print(i)
         min = [1000,-1]
         for nj, j in enumerate(centroids):
             dis = distant(i,j)
@@ -42,11 +53,19 @@ def getLabels(data, centroids):
                 min[0] = dis
                 min[1] = nj
         res[min[1]].append(i)
-    return res
+    return np.asarray(res)
 
-def findMean(labels):
-    l = len(labels)
-    return [i/l for i in [sum(x) for x in zip(*labels)]]
+def findMean(labels, s_attr=33):
+    res = []
+    for i in labels:
+        l = len(i)
+        print(l)
+        tmp = [a/l for a in [sum(x) for x in zip(*i)]]
+        if tmp == []:
+            print('reinitialize centroid')
+            tmp = list(np.random.rand(s_attr))
+        res.append(tmp)
+    return np.asarray(res)
 
 # # Function: Should Stop
 # # -------------

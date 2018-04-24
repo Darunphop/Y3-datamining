@@ -72,7 +72,7 @@ def normalize(input):
     input['absences'] = input['absences'].apply(lambda x:scaling(0, 93, x))
     input['G1'] = input['G1'].apply(lambda x:scaling(0, 20, x))
     input['G2'] = input['G2'].apply(lambda x:scaling(0, 20, x))
-    # input['G3'] = input['G3'].apply(lambda x:scaling(0, 20, x))
+    input['G3'] = input['G3'].apply(lambda x:scaling(0, 20, x))
 
 
 def scaling(min, max, x):
