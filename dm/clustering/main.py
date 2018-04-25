@@ -1,10 +1,12 @@
 import input
+import matplotlib.pyplot as plt
 import k_mean as km
 import numpy as np
 
 if __name__ == '__main__':
     data = input.loadFile()             #   dataset loading
     input.normalize(data)               #   normalize dataset
+    res = []
     for i in range(2,21):               #   Loop k from 2 - 20
         k = i
         avg_r = 3                       #   set repeating step
@@ -20,3 +22,8 @@ if __name__ == '__main__':
             print('%sK = %2d (%d) Purity %f'% (''.ljust(5), i, j, p))
         print('K = %2d Average Purity %f\n'% (i, sum_p/avg_r))
                                         #   show final purity for each k
+        res.append(sum_p/avg_r)
+    fig = plt.figure(1)
+    ax = fig.add_subplot(111)
+    plt.plot(range(2,21),res)
+    plt.show()
