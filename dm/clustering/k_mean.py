@@ -3,14 +3,14 @@ import numpy as np
 def kmeans(dataSet, k):
 	
     centroids = randomCentroids(dataSet.shape[1], k)
-    
-    # Initialize book keeping vars.
+
     iterations = 0
     diff = 9999
     o_centroids = None
     epsilon = 0.001
+    max_iterations = 150
 
-    while stopCondition(diff, iterations, epsilon):
+    while stopCondition(diff, iterations, epsilon, max_iterations):
         o_centroids = centroids
         iterations += 1
 
@@ -19,7 +19,7 @@ def kmeans(dataSet, k):
         centroids = findMean(labels)
 
         diff = sum([distant(centroids[i], o_centroids[i]) for i in range(len(centroids))])
-        print('This diff :',diff,'i :', iterations)
+        # print('This diff :',diff,'i :', iterations)
     
     return centroids, labels
 
@@ -34,7 +34,7 @@ def randomCentroids(attr, k):
 
 def distant(a, b):
     # print(a,b)
-    return np.sqrt(sum((a - b) ** 2))
+    return np.sqrt(sum((a[:-1] - b[:-1]) ** 2))
 
 def stopCondition(dif_c, iterations, epsilon=0.1, max_it = 1000):
     # n_attr = len(n_centroids)
@@ -59,10 +59,12 @@ def findMean(labels, s_attr=33):
     res = []
     for i in labels:
         l = len(i)
-        print(l)
-        tmp = [a/l for a in [sum(x) for x in zip(*i)]]
+        # print(l)
+        # tmp = [a/l for a in [sum(x) for x in zip(*i)]]    #   Arithmetic mean
+        tmp = [np.power(a, 1./l) for a in [np.prod(x) for x in zip(*i)]]  #   Gemotric mean
+        # print(tmp)
         if tmp == []:
-            print('reinitialize centroid')
+            # print('reinitialize centroid')
             tmp = list(np.random.rand(s_attr))
         res.append(tmp)
     return np.asarray(res)
@@ -73,34 +75,21 @@ def evalLabels(labels):
     for i in labels:
         tmp = []
         for j in i:
-            # print(j)
-            tmp.append(j[-1:][0])
+            # print(len(j))
+            tmp.append(int(j[-1:][0]))
         res.append(tmp)
     return np.asarray(res)
 
-# # Function: Should Stop
-# # -------------
-# # Returns True or False if k-means is done. K-means terminates either
-# # because it has run a maximum number of iterations OR the centroids
-# # stop changing.
-# def shouldStop(oldCentroids, centroids, iterations):
-#     if iterations > MAX_ITERATIONS: return True
-#     return oldCentroids == centroids
-
-# # Function: Get Labels
-# # -------------
-# # Returns a label for each piece of data in the dataset. 
-# def getLabels(dataSet, centroids):
-#     # For each element in the dataset, chose the closest centroid. 
-#     # Make that centroid the element's label.
-
-# # Function: Get Centroids
-# # -------------
-# # Returns k random centroids, each of dimension n.
-# def getCentroids(dataSet, labels, k):
-#     # Each centroid is the geometric mean of the points that
-#     # have that centroid's label. Important: If a centroid is empty (no points have
-#     # that centroid's label) you should randomly re-initialize it.
+def getPurity(labels, k=21):
+    s = 0
+    ip = 0
+    for i in labels:
+        s += len(i)
+        max = [0 for x in range(k)]
+        for nj, j in enumerate(i):
+            max[int(j[-1:][0])] += 1
+        ip += max[np.argmax(max)]
+    return ip / s
 
 if __name__ =='__main__':
     pass

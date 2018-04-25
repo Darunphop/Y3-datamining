@@ -72,14 +72,14 @@ def normalize(input):
     input['absences'] = input['absences'].apply(lambda x:scaling(0, 93, x))
     input['G1'] = input['G1'].apply(lambda x:scaling(0, 20, x))
     input['G2'] = input['G2'].apply(lambda x:scaling(0, 20, x))
-    input['G3'] = input['G3'].apply(lambda x:scaling(0, 20, x))
+    # input['G3'] = input['G3'].apply(lambda x:scaling(0, 20, x))
 
 
 def scaling(min, max, x):
     return (x - min)/(max - min)
 
 def binary(a, x):
-    return 1 if x == a else 0
+    return 1 if x == a else 0.5
 
 def nominal(p_list, x):
     for n, i in enumerate(p_list):
